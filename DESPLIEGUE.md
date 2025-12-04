@@ -1,36 +1,30 @@
-# Documentación de GitHub Actions
+# Practica Docker Hub
 
-## Configuración del Workflow
+## Creacion del archivo
+- Creo el directorio `.github\workflows\action.yml`
 
-### 1. Ubicación del archivo
-Crear el archivo `.github/workflows/action.yml` en la raíz del proyecto.
+## Explicación del codigo
 
-### 2. Estructura básica
-- **name**: Nombre del workflow `Docker Image`
-- **on**:Para ejecutar el workflow (push a master o manualmente)
-- **jobs**: Define las tareas a ejecutar
+### Name
+Pongo el nombre del workflow: `Docker Image`
 
-### 3. Pasos del workflow
+### On
+Cuándo se ejecutas el workflow:
+- `push`: Al hacer push a la rama `master`
+- `workflow_dispatch`: De forma manual en GitHub Actions
 
-El workflow ejecuta los siguientes pasos automáticamente:
+### Jobs
+Se ejecuta en `ubuntu-latest`
 
-1. **Checkout**: Descarga el código del repositorio
-2. **Setup JDK 17**: Configura Java 17 para compilar
-3. **Build Gradle**: Genera el archivo WAR con `./gradlew bootWar`
-4. **Login Docker Hub**: Autentica con Docker Hub usando secrets
-5. **Build & Push**: Construye la imagen Docker y la sube a Docker Hub con dos tags:
-   - `latest`: Última versión
-   - `{commit-sha}`: Versión específica del commit
+**Steps**:
+1. **Checkout repositorio**: Se descarga el código con `actions/checkout@v3`
+2. **Log en Docker Hub**: Despues autentifica usando `docker/login-action@v3` con los secrets `DOCKER_USERNAME` y `DOCKER_TOKEN`
+3. **Construccion y Push**: Construye y sube la imagen con `docker/build-push-action@v5`
 
-### 4. Configuración de Secrets en GitHub
+## Configuración de Secrets
+En **Settings -> Secrets and variables -> Actions** del repositorio, añadir:
+- `DOCKER_USERNAME`: Usuario de Docker Hub
+- `DOCKER_TOKEN`: Token de acceso
 
-Para que funcione, debes configurar estos secrets en el repositorio:
-
-1. Ve a: **Settings -> Secrets -> and variables -> Actions -> New repository secret**
-2. Añade los siguientes secrets:
-   - `DOCKER_USERNAME`: Tu usuario de Docker Hub
-   - `DOCKER_TOKEN`: Token de acceso generado en Docker Hub 
-
-### 5. Ejecución
-
-El workflow se ejecuta automáticamente en cada push a `master` o manualmente desde la pestaña Actions en GitHub 
+# DONDE ME HE QUEDADO
+- No he podido logearme en docker hub y no implemente la funcion de poner el nombre en el titulo 
